@@ -1,0 +1,16 @@
+<nav>
+  <div id="logo">
+    <span class="material-icons">
+       api
+    </span>
+  </div>
+  <ul>
+    <li *ngFor="let option of options">
+      <a [routerLink]="option.routeLink">
+        <span class="material-icons">
+          {{option.icon}}
+        </span>
+      </a>
+    </li>
+  </ul>
+</nav>
