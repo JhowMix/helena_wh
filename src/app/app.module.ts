@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SideMenuModule} from './side-menu/side-menu.module';
+import {ItemModule} from './item/item.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {SideMenuModule} from './side-menu/side-menu.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SideMenuModule
+    SideMenuModule,
+    ItemModule
   ],
   providers: [],
   bootstrap: [AppComponent]

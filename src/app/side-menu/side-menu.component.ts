@@ -9,8 +9,8 @@ import {SideMenuOption} from '../model/side-menu-option.model';
 export class SideMenuComponent implements OnInit {
 
   options: SideMenuOption[] = [
-    {label: 'Fornecedores', routeLink: 'fornecedores', icon: 'groups'},
-    {label: 'Itens', routeLink: 'itens', icon: 'all_inbox'}
+    {label: 'Fornecedores', routeLink: 'fornecedores/novo', icon: 'groups', selected: false},
+    {label: 'Itens', routeLink: 'itens', icon: 'all_inbox', selected: false}
   ];
 
   constructor() { }
@@ -18,4 +18,11 @@ export class SideMenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selectView(index: number): void {
+    for(const option of this.options) {
+      option.selected = false;
+    }
+
+    this.options[index].selected = true;
+  }
 }
