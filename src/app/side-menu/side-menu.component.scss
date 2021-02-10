@@ -25,6 +25,7 @@ ul li span {
 }
 
 li:hover {
+  color: #304ffe;
   background: #eeeded;
   border-right: 4px solid #304ffe;
 
@@ -32,17 +33,12 @@ li:hover {
   transition: background 200ms;
 }
 
-li a {
+li  {
   color: #dedede;
 }
 
-li:hover a {
-  color: #304ffe;
-  text-decoration: none;
-}
-
 #logo {
-  color: #304ffe;
+  color: #dedede;
 
   width: 6vw;
   height: 10vh;
@@ -55,10 +51,7 @@ li:hover a {
 }
 
 .selected-item {
+  color: #304ffe;
   background: #fff;
   border-right: 4px solid #304ffe;
-}
-
-.selected-item a {
-  color: #304ffe;
 }

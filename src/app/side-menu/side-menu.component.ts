@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SideMenuOption} from '../model/side-menu-option.model';
+import {Location} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-side-menu',
@@ -9,20 +11,36 @@ import {SideMenuOption} from '../model/side-menu-option.model';
 export class SideMenuComponent implements OnInit {
 
   options: SideMenuOption[] = [
-    {label: 'Fornecedores', routeLink: 'fornecedores/novo', icon: 'groups', selected: false},
+    {label: 'Fornecedores', routeLink: '/fornecedores/novo', icon: 'groups', selected: false},
     {label: 'Itens', routeLink: 'itens', icon: 'all_inbox', selected: false}
   ];
 
-  constructor() { }
+  constructor(
+    private route: Router,
+    private location: Location
+  ) { }
 
   ngOnInit(): void {
+    this.checkURL();
   }
 
-  selectView(index: number): void {
-    for(const option of this.options) {
+  async selectView(index: number): Promise<any> {
+    for (const option of this.options) {
       option.selected = false;
     }
 
     this.options[index].selected = true;
+
+    await this.route.navigate(this.options[index].routeLink.split('/'));
+  }
+
+  private checkURL(): void {
+    const path = this.location.path();
+
+    for (const option of this.options) {
+      if (option.routeLink === path) {
+        option.selected = true;
+      }
+    }
   }
 }

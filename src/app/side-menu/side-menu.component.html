@@ -5,12 +5,10 @@
     </span>
   </div>
   <ul>
-    <li *ngFor="let option of options; let i = index" (click)="selectView(i)" [ngClass]="{'selected-item': option.selected}">
-      <a [routerLink]="option.routeLink">
+    <li matRipple *ngFor="let option of options; let i = index" (click)="selectView(i)" [ngClass]="{'selected-item': option.selected}">
         <span class="material-icons">
           {{option.icon}}
         </span>
-      </a>
     </li>
   </ul>
 </nav>
