@@ -1,5 +1,15 @@
-.back-image {
+.app-background {
   width: 100%;
   height: 100vh;
-  background-color: #fff;
+  background-color: #ececec;
+}
+
+.app-content {
+  position: absolute;
+
+  top: 1%;
+  left: 8vw;
+
+  width: 80vw;
+  height: 99vh;
 }
