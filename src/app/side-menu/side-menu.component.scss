@@ -25,9 +25,9 @@ ul li span {
 }
 
 li:hover {
-  color: #304ffe;
+  color: #303f9f;
   background: #eeeded;
-  border-right: 4px solid #304ffe;
+  border-right: 4px solid #303f9f;
 
   cursor: pointer;
   transition: background 200ms;
@@ -51,7 +51,7 @@ li  {
 }
 
 .selected-item {
-  color: #304ffe;
+  color: #303f9f;
   background: #fff;
-  border-right: 4px solid #304ffe;
+  border-right: 4px solid #303f9f;
 }

@@ -1,11 +1,32 @@
-.item-form-card-1 {
-  display: block;
-  border-radius: 15px;
-  max-width: 30vw;
-  box-shadow: 10px 10px 35px -5px  #000;
+mat-grid-tile {
+  //background: lightblue;
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
+.item-grid {
+  vertical-align: center;
+  width: 90vw;
+  padding-bottom: 0;
+}
+
+.item-card-form1 {
+  width: 90%;
+  height: 90%;
+}
+
+.item-card-form1 .mat-form-field {
+  width: 100%;
+}
+
+.item-card-form2 {
+  width: 90%;
+  height: 90%;
+}
+
+.item-card-form2 .mat-form-field {
+  width: 100%;
+}
+
+.image-card-form {
+  width: 90%;
+  height: 40%;
 }
