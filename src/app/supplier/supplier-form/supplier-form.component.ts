@@ -1,5 +1,16 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
+import { Address } from 'src/app/model/address.model';
+import { City } from 'src/app/model/city.model';
+import { Phone } from 'src/app/model/phone.model';
+import { Supplier } from 'src/app/model/supplier.model';
+import { UF } from 'src/app/model/uf.model';
+import { AddressService } from 'src/app/service/address.service';
+import { CityService } from 'src/app/service/city.service';
+import { UfService } from 'src/app/service/uf.service';
 
 @Component({
   selector: 'app-supplier-form',
@@ -28,10 +39,25 @@ export class SupplierFormComponent implements OnInit {
 
   isContentVisible = false;
   isFetchingAddress = false;
+  isFetchingCities = false;
 
-  constructor() { }
+  supplierForm: FormGroup;
+
+  addressQuery: string;
+
+  allUfs: UF[];
+  allCities: City[];
+
+  constructor(
+    private addressSvc: AddressService,
+    private ufSvc: UfService,
+    private citySvc: CityService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
+    this.buildSupplierForm();
+    this.ufSvc.getAll().subscribe(res => this.allUfs = res);
     setTimeout(() => {
       this.isContentVisible = true;
     }, 200);
@@ -39,10 +65,94 @@ export class SupplierFormComponent implements OnInit {
 
   fetchLocation(): void {
     this.isFetchingAddress = true;
+    
+    if(this.addressQuery) {
+      this.addressSvc.fetchLocation(this.addressQuery).subscribe(res => {
+        this.isFetchingAddress = false;
+        const city = res.city;
+        const district = res.district; 
+        const placeDesc = res.placeDesc;
+        
+        this.citySvc.fetchByUf(res.city.uf).subscribe(res => {
+          this.allCities = res;
+          this.supplierForm.controls.city.setValue(city.id);
+          this.supplierForm.controls.uf.setValue(city.uf.id);
+          this.supplierForm.controls.district.setValue(district);
+          this.supplierForm.controls.location.setValue(placeDesc);
+        });
+      });
+    }
+  }
 
-    setTimeout(() => {
-      this.isFetchingAddress = false;
-    }, 3000);
+  fetchCities(): void {
+    const value = this.allUfs.find(uf => uf.id === this.supplierForm.controls.uf.value);
+    this.isFetchingCities = true;
 
+    this.citySvc.fetchByUf(value).subscribe(res => {
+      this.allCities = res
+      this.isFetchingCities = false;
+    }, error => {
+      console.error(error)
+      this.isFetchingCities = false;
+    });
+  }
+
+  send() {
+    this.buildSendableSupplier();
+  }
+
+  private buildSupplierForm(): void {
+    this.supplierForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      cnpj: ['', [
+        Validators.required,
+        Validators.minLength(14)
+      ]],
+      ie: ['', [Validators.required]],
+      fone1: ['', [Validators.required]],
+      fone2: ['', []],
+      email: ['', [
+        Validators.required, 
+        Validators.email
+      ]],
+      uf: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      district: ['', [Validators.required]],
+      location: ['', [Validators.required]]
+    })
+  }
+
+  private buildSendableSupplier() {
+    if(this.supplierForm.valid) {
+      const supplier = {} as Supplier;
+      const address = {} as Address;
+      
+      address.city = this.supplierForm.controls.city.value;
+      address.district = this.supplierForm.controls.district.value
+      address.placeDesc = this.supplierForm.controls.location.value;
+      address.zipCode = this.addressQuery;
+
+      supplier.name = this.supplierForm.controls.name.value;
+      supplier.cnpj = this.supplierForm.controls.cnpj.value;
+      supplier.stateSub = this.supplierForm.controls.ie.value;
+      supplier.email = this.supplierForm.controls.email.value;
+      supplier.phones = [];
+      
+      supplier.addresses = [address];
+
+      if(this.supplierForm.controls.fone1.value) {
+        supplier.phones.push({
+          category: 'LANDLINE',
+          number: this.supplierForm.controls.fone1.value
+        } as Phone);
+      } else if(this.supplierForm.controls.fone2.value) {
+        supplier.phones.push({
+          category: 'LANDLINE',
+          number: this.supplierForm.controls.fone2.value
+        } as Phone);
+      }
+      
+      console.log(supplier);
+    }
   }
 }

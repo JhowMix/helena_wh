@@ -7,7 +7,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SideMenuModule} from './side-menu/side-menu.module';
 import {ItemModule} from './item/item.module';
 import {HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
 import { SupplierModule } from './supplier/supplier.module';
 
 @NgModule({
@@ -19,7 +18,6 @@ import { SupplierModule } from './supplier/supplier.module';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
     SideMenuModule,
     ItemModule,
     SupplierModule
