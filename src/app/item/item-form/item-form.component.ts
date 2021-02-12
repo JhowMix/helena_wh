@@ -14,15 +14,21 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
   templateUrl: './item-form.component.html',
   styleUrls: ['./item-form.component.scss'],
   animations: [
-    trigger('formTrigger', [
+    trigger('cardTrigger', [
       transition(':enter', [
         style({ height: 0 }),
-        animate('200ms 100ms ease-out', style({ height: '90%' }))
+        animate('150ms ease-out', style({ height: '90%' }))
       ]),
       transition(':leave', [
         style({ height: '90%' }),
         animate('200ms 100ms ease-out', style({ height: 0 }))
       ]),
+    ]),
+    trigger('cardContentTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('170ms ease-out', style({ opacity: 1 }))
+      ])
     ])
   ]
 })
@@ -36,6 +42,8 @@ export class ItemFormComponent implements OnInit {
   suppliers: Supplier[] = [];
   filteredSuppliers: Observable<Supplier[]>;
 
+  isContentVisible = false;
+
   constructor(
     private supplierSvc: SupplierService
   ) {
@@ -43,6 +51,10 @@ export class ItemFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.isContentVisible = true;
+    }, 200);
+
     this.supplierSvc.all().subscribe(res => {
       this.allSuppliers = res;
 

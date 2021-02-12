@@ -1,0 +1,113 @@
+<mat-grid-list class="supplier-grid" cols="2" rowHeight="1:1">
+  <mat-grid-tile>
+    <mat-card @cardTrigger class="supplier-card-form1">
+      <div @cardContentTrigger *ngIf="isContentVisible">
+        <mat-card-header>
+          <div mat-card-avatar>
+            <span class="material-icons">
+              group
+            </span>
+          </div>
+          <mat-card-title>Fornecedor</mat-card-title>
+          <mat-card-subtitle>Registrar um novo fornecedor</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Razão Social</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>CNPJ</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Inscrição Estadual</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone 1</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone 2</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>E-mail</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card @cardTrigger class="supplier-card-form1">
+      <div @cardContentTrigger *ngIf="isContentVisible">
+        <mat-card-header>
+          <div mat-card-avatar>
+            <span class="material-icons">
+              home
+            </span>
+          </div>
+          <mat-card-title>Endereço</mat-card-title>
+          <mat-card-subtitle>Registrar um endereço</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput autocomplete="false">
+              <mat-spinner *ngIf="isFetchingAddress" [diameter]="25" matSuffix></mat-spinner>
+              <button *ngIf="!isFetchingAddress" matSuffix mat-icon-button (click)="fetchLocation()">
+                <mat-icon>search</mat-icon>
+              </button>          
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select>
+                <mat-option></mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Municipio</mat-label>
+              <mat-select>
+                <mat-option></mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Endereço</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Complemento</mat-label>
+              <input matInput autocomplete="false">
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-stroked-button>Salvar</button>
+          </div>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
