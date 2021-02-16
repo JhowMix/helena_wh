@@ -3,6 +3,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Address } from 'src/app/model/address.model';
 import { City } from 'src/app/model/city.model';
 import { Phone } from 'src/app/model/phone.model';
@@ -10,6 +12,7 @@ import { Supplier } from 'src/app/model/supplier.model';
 import { UF } from 'src/app/model/uf.model';
 import { AddressService } from 'src/app/service/address.service';
 import { CityService } from 'src/app/service/city.service';
+import { SupplierService } from 'src/app/service/supplier.service';
 import { UfService } from 'src/app/service/uf.service';
 
 @Component({
@@ -49,10 +52,13 @@ export class SupplierFormComponent implements OnInit {
   allCities: City[];
 
   constructor(
+    private supplierSvc: SupplierService,
     private addressSvc: AddressService,
     private ufSvc: UfService,
     private citySvc: CityService,
-    private formBuilder: FormBuilder
+    private _route: Router,
+    private formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -98,7 +104,19 @@ export class SupplierFormComponent implements OnInit {
   }
 
   send() {
-    this.buildSendableSupplier();
+    const supplier = this.buildSendableSupplier();
+
+    if(supplier !== null) {
+      this.supplierSvc.create(supplier).subscribe(async _ => {
+        this._snackBar.open('Fornecedor criado com sucesso!', null, { duration: 2000 })
+        await this._route.navigateByUrl('');
+      }, error => {
+        console.error(error);
+        this._snackBar.open('Falha ao criar fornecedor', null, { duration: 2000 })
+      });
+    } else {
+      this._snackBar.open('Preencha o formulário corretamente', null, { duration: 2000 })
+    }
   }
 
   private buildSupplierForm(): void {
@@ -108,7 +126,10 @@ export class SupplierFormComponent implements OnInit {
         Validators.required,
         Validators.minLength(14)
       ]],
-      ie: ['', [Validators.required]],
+      ie: ['', [
+        Validators.required,
+        Validators.maxLength(14)
+      ]],
       fone1: ['', [Validators.required]],
       fone2: ['', []],
       email: ['', [
@@ -122,12 +143,12 @@ export class SupplierFormComponent implements OnInit {
     })
   }
 
-  private buildSendableSupplier() {
+  private buildSendableSupplier(): Supplier {
     if(this.supplierForm.valid) {
       const supplier = {} as Supplier;
       const address = {} as Address;
       
-      address.city = this.supplierForm.controls.city.value;
+      address.city = this.allCities.find(city => city.id === this.supplierForm.controls.city.value);
       address.district = this.supplierForm.controls.district.value
       address.placeDesc = this.supplierForm.controls.location.value;
       address.zipCode = this.addressQuery;
@@ -152,7 +173,9 @@ export class SupplierFormComponent implements OnInit {
         } as Phone);
       }
       
-      console.log(supplier);
+      return supplier;
     }
+
+    return null;
   }
 }

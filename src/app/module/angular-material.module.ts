@@ -12,6 +12,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatOptionModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSnackBarModule,
     MatRippleModule
   ],
   exports: [
@@ -43,6 +45,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatOptionModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSnackBarModule,
     MatRippleModule
   ]
 })
