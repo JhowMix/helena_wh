@@ -43,6 +43,7 @@ export class SupplierFormComponent implements OnInit {
   isContentVisible = false;
   isFetchingAddress = false;
   isFetchingCities = false;
+  isSendingSupplier = false;
 
   supplierForm: FormGroup;
 
@@ -104,6 +105,7 @@ export class SupplierFormComponent implements OnInit {
   }
 
   send() {
+    this.isSendingSupplier = true;
     const supplier = this.buildSendableSupplier();
 
     if(supplier !== null) {
@@ -113,8 +115,10 @@ export class SupplierFormComponent implements OnInit {
       }, error => {
         console.error(error);
         this._snackBar.open('Falha ao criar fornecedor', null, { duration: 2000 })
+        this.isSendingSupplier = false;
       });
     } else {
+      this.isSendingSupplier = false;
       this._snackBar.open('Preencha o formulário corretamente', null, { duration: 2000 })
     }
   }
