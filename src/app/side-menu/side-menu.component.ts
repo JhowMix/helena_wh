@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 export class SideMenuComponent implements OnInit {
 
   options: SideMenuOption[] = [
-    {label: 'Fornecedores', routeLink: '/fornecedores/novo', icon: 'groups', selected: false},
+    {label: 'Fornecedores', routeLink: '/fornecedores', icon: 'groups', selected: false},
     {label: 'Itens', routeLink: '/itens/novo', icon: 'all_inbox', selected: false}
   ];
 

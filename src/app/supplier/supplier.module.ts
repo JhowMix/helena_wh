@@ -5,11 +5,13 @@ import { AngularMaterialModule } from '../module/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { LoadingBlockViewComponent } from '../loading-block-view/loading-block-view.component';
+import { SupplierListComponent } from './supplier-list/supplier-list.component';
 
 @NgModule({
   declarations: [
     SupplierFormComponent,
-    LoadingBlockViewComponent
+    LoadingBlockViewComponent,
+    SupplierListComponent
   ],
   imports: [
     CommonModule,

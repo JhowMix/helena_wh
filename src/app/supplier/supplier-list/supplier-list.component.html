@@ -1,0 +1,28 @@
+<app-loading-block-view [visible]="isLoadingSuppliers"></app-loading-block-view>
+<mat-grid-list class="supplier-grid" cols="1" rowHeight="1:1">
+    <mat-grid-tile>
+        <table mat-table [dataSource]="suppliers">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef><b>Cod.</b></th>
+                <td mat-cell *matCellDef="let supplier">{{supplier.id}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef><b>Nome</b></th>
+                <td mat-cell *matCellDef="let supplier">{{supplier.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="cnpj">
+                <th mat-header-cell *matHeaderCellDef><b>CNPJ</b></th>
+                <td mat-cell *matCellDef="let supplier">{{supplier.cnpj}}</td>
+            </ng-container>
+            <ng-container matColumnDef="stateSub">
+                <th mat-header-cell *matHeaderCellDef><b>IE</b></th>
+                <td mat-cell *matCellDef="let supplier">{{supplier.stateSub}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let rowData; columns: columnsToDisplay"></tr>
+        </table>
+    </mat-grid-tile>
+</mat-grid-list>
