@@ -5,9 +5,14 @@ import {Supplier} from '../../model/supplier.model';
 import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
-import {FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MeasurementUnitService } from 'src/app/service/measurement-unit.service';
+import { MeasurementUnit } from 'src/app/model/measurement-unit.model';
+import { Item } from 'src/app/model/item.model';
+import { Measurement } from 'src/app/model/measurement.model';
+import { ItemService } from 'src/app/service/item.service';
 
 @Component({
   selector: 'app-item-form',
@@ -40,17 +45,22 @@ export class ItemFormComponent implements OnInit {
   supplierCtrl = new FormControl();
   allSuppliers: Supplier[] = [];
   suppliers: Supplier[] = [];
+  itemForm: FormGroup;
   filteredSuppliers: Observable<Supplier[]>;
 
+  measurementUnits: MeasurementUnit[] = [];
   isContentVisible = false;
 
   constructor(
-    private supplierSvc: SupplierService
-  ) {
-
-  }
+    private supplierSvc: SupplierService,
+    private itemSvc: ItemService,
+    private measurementUnitSvc: MeasurementUnitService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
+    this.buildItemForm();
+
     setTimeout(() => {
       this.isContentVisible = true;
     }, 200);
@@ -63,21 +73,8 @@ export class ItemFormComponent implements OnInit {
         map((supplier: Supplier | null) => supplier ? this._filter(supplier) : this.allSuppliers.slice() )
       );
     });
-  }
 
-  add(event: MatChipInputEvent): void {
-    // const input = event.input;
-    // const value = event.value;
-    //
-    // if((value || '').trim()) {
-    //   this.suppliers.push(value.trim());
-    // }
-    //
-    // if(input) {
-    //   input.value = '';
-    // }
-    //
-    // this.supplierCtrl.setValue(null);
+    this.measurementUnitSvc.all().subscribe(res => this.measurementUnits = res, error => console.error(error));
   }
 
   remove(supplier: Supplier): void {
@@ -89,13 +86,62 @@ export class ItemFormComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.suppliers.push(event.option.value as Supplier);
+    if(!this.suppliers.find(s => s.id === event.option.value.id)) {
+      this.suppliers.push(event.option.value as Supplier);
+    }
+    
     this.supplierInput.nativeElement.value = '';
     this.supplierCtrl.setValue(null);
   }
 
+  send(): void {
+    const item = this.buildSendableItem();
+    
+    if(item) {
+      this.itemSvc.create(item).subscribe(res => console.log(res), error => console.error(error));
+    }
+  }
+
+  private buildSendableItem(): Item {
+    if(this.itemForm.valid) {
+      const item = {} as Item;
+      const measurement = {} as Measurement;
+
+      measurement.width = this.itemForm.controls.width.value;
+      measurement.height = this.itemForm.controls.height.value;
+      measurement.length = this.itemForm.controls.length.value;
+      measurement.unit = this.itemForm.controls.unit.value;
+  
+      item.name = this.itemForm.controls.name.value;
+      item.details = this.itemForm.controls.details.value;
+      item.suppliers = this.suppliers;
+      item.measurement = measurement;
+      
+      return item;
+    }
+
+    return null;
+  }
+
+  private buildItemForm(): void {
+    this.itemForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      details: ['', [Validators.required]],
+      width: ['', [Validators.required]],
+      height: ['', [Validators.required]],
+      length: ['', [Validators.required]],
+      unit: ['', [Validators.required]],
+    });
+  }
+
   private _filter(value: Supplier): Supplier[] {
-    const filterValue = value.name.toLocaleLowerCase();
+    let filterValue;
+
+    if(typeof value === 'string') {
+      filterValue = (value as string).toLocaleLowerCase();
+    } else {
+      filterValue = value.name.toLocaleLowerCase();
+    }
 
     return this.allSuppliers.filter(supplier => supplier.name.toLocaleLowerCase().indexOf(filterValue) === 0);
   }

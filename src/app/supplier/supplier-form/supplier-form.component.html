@@ -1,6 +1,6 @@
 <mat-grid-list class="supplier-grid" cols="2" rowHeight="1:1">
   <app-loading-block-view [visible]="isSendingSupplier"></app-loading-block-view>
-  <form [formGroup]="supplierForm" >
+  <form [formGroup]="supplierForm">
     <mat-grid-tile>
       <mat-card @cardTrigger class="supplier-card-form1">
         <div @cardContentTrigger *ngIf="isContentVisible">

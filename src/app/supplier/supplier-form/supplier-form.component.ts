@@ -151,7 +151,7 @@ export class SupplierFormComponent implements OnInit {
       const address = {} as Address;
       
       address.city = this.allCities.find(city => city.id === this.supplierForm.controls.city.value);
-      address.district = this.supplierForm.controls.district.value
+      address.district = this.supplierForm.controls.district.value;
       address.placeDesc = this.supplierForm.controls.location.value;
       address.zipCode = this.addressQuery;
 
