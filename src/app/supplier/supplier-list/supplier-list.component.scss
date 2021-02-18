@@ -1,10 +1,19 @@
 table {
-  position: absolute;
-  top: 0;
-  
   width: 100%;
+}
+
+.table-container {
+  width: 100%;
+  position: absolute;
+  top: 8%;
 }
 
 .supplier-grid {
   width: 90vw;
+}
+
+.btn-container {
+  margin-top: 0.5%;
+  width: 100%;
+  text-align: right;
 }
