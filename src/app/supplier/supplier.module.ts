@@ -6,12 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { LoadingBlockViewComponent } from '../loading-block-view/loading-block-view.component';
 import { SupplierListComponent } from './supplier-list/supplier-list.component';
+import { CNPJPipe } from '../pipe/cnpj.pipe';
 
 @NgModule({
   declarations: [
     SupplierFormComponent,
     LoadingBlockViewComponent,
-    SupplierListComponent
+    SupplierListComponent,
+    CNPJPipe
   ],
   imports: [
     CommonModule,

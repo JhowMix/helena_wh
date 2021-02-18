@@ -8,7 +8,6 @@ import {SideMenuModule} from './side-menu/side-menu.module';
 import {ItemModule} from './item/item.module';
 import {HttpClientModule} from '@angular/common/http';
 import { SupplierModule } from './supplier/supplier.module';
-import { LoadingBlockViewComponent } from './loading-block-view/loading-block-view.component';
 
 @NgModule({
   declarations: [
