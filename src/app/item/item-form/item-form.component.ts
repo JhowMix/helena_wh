@@ -2,8 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {SupplierService} from '../../service/supplier.service';
 import {Supplier} from '../../model/supplier.model';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {Observable} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
@@ -13,6 +12,8 @@ import { MeasurementUnit } from 'src/app/model/measurement-unit.model';
 import { Item } from 'src/app/model/item.model';
 import { Measurement } from 'src/app/model/measurement.model';
 import { ItemService } from 'src/app/service/item.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-form',
@@ -50,12 +51,15 @@ export class ItemFormComponent implements OnInit {
 
   measurementUnits: MeasurementUnit[] = [];
   isContentVisible = false;
+  isSendingItem = false;
 
   constructor(
     private supplierSvc: SupplierService,
     private itemSvc: ItemService,
     private measurementUnitSvc: MeasurementUnitService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar,
+    private _route: Router
   ) { }
 
   ngOnInit(): void {
@@ -95,10 +99,20 @@ export class ItemFormComponent implements OnInit {
   }
 
   send(): void {
+    this.isSendingItem = true;
     const item = this.buildSendableItem();
     
     if(item) {
-      this.itemSvc.create(item).subscribe(res => console.log(res), error => console.error(error));
+      this.itemSvc.create(item).subscribe( async _ => {
+        this._snackBar.open('Item criado com sucesso!', null, { duration: 2000 })
+        this.isSendingItem = false;
+        await this._route.navigateByUrl('');
+      }, error => {
+        console.error(error);
+        this.isSendingItem = false;
+      });
+    } else {
+      this.isSendingItem = false;
     }
   }
 

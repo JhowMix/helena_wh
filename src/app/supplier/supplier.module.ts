@@ -4,14 +4,13 @@ import { SupplierFormComponent } from './supplier-form/supplier-form.component';
 import { AngularMaterialModule } from '../module/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
-import { LoadingBlockViewComponent } from '../loading-block-view/loading-block-view.component';
 import { SupplierListComponent } from './supplier-list/supplier-list.component';
 import { CNPJPipe } from '../pipe/cnpj.pipe';
+import { UtilModule } from '../module/util.module';
 
 @NgModule({
   declarations: [
     SupplierFormComponent,
-    LoadingBlockViewComponent,
     SupplierListComponent,
     CNPJPipe
   ],
@@ -20,7 +19,8 @@ import { CNPJPipe } from '../pipe/cnpj.pipe';
     FormsModule,
     ReactiveFormsModule,
     AngularMaterialModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    UtilModule
   ]
 })
 export class SupplierModule { }

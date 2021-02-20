@@ -12,7 +12,7 @@ export class SideMenuComponent implements OnInit {
 
   options: SideMenuOption[] = [
     {label: 'Fornecedores', routeLink: '/fornecedores', icon: 'groups', selected: false},
-    {label: 'Itens', routeLink: '/itens/novo', icon: 'all_inbox', selected: false}
+    {label: 'Itens', routeLink: '/itens', icon: 'all_inbox', selected: false}
   ];
 
   constructor(

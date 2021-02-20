@@ -1,5 +1,4 @@
 <app-loading-block-view [visible]="isLoadingSuppliers"></app-loading-block-view>
-
 <mat-grid-list class="supplier-grid" cols="1" rowHeight="2:1">
     <mat-grid-tile @suppliersTrigger *ngIf="!isLoadingSuppliers">
         <div class="table-container">
