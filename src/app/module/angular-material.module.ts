@@ -15,6 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatGridListModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatOptionModule,
     MatProgressSpinnerModule,
     MatSelectModule,
@@ -46,6 +48,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatGridListModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatOptionModule,
     MatProgressSpinnerModule,
     MatSelectModule,

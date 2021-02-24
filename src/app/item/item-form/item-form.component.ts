@@ -14,6 +14,7 @@ import { Measurement } from 'src/app/model/measurement.model';
 import { ItemService } from 'src/app/service/item.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ArrayDataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-item-form',
@@ -39,6 +40,7 @@ import { Router } from '@angular/router';
   ]
 })
 export class ItemFormComponent implements OnInit {
+  @ViewChild('inputImage', {static: false}) inputImage: ElementRef<HTMLInputElement>;
   @ViewChild('supplierInput') supplierInput: ElementRef<HTMLInputElement>;
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -52,6 +54,8 @@ export class ItemFormComponent implements OnInit {
   measurementUnits: MeasurementUnit[] = [];
   isContentVisible = false;
   isSendingItem = false;
+
+  images: File[] = [];
 
   constructor(
     private supplierSvc: SupplierService,
@@ -101,9 +105,16 @@ export class ItemFormComponent implements OnInit {
   send(): void {
     this.isSendingItem = true;
     const item = this.buildSendableItem();
+    const formData = new FormData()
+
+    formData.append('item', JSON.stringify(item));
+
+    for(const image of this.images) {
+      formData.append('files', image);
+    }
     
     if(item) {
-      this.itemSvc.create(item).subscribe( async _ => {
+      this.itemSvc.createOne(formData).subscribe( async _ => {
         this._snackBar.open('Item criado com sucesso!', null, { duration: 2000 })
         this.isSendingItem = false;
         await this._route.navigateByUrl('');
@@ -114,6 +125,20 @@ export class ItemFormComponent implements OnInit {
     } else {
       this.isSendingItem = false;
     }
+  }
+  
+  onFileSelect(event): void {
+    if(event.target.files.length > 0) {
+      this.images.push(event.target.files[0]);
+    }
+  }
+
+  openInputImage(): void {
+    this.inputImage.nativeElement.click();
+  }
+
+  deleteFile(index: number): void {
+    this.images.splice(index, 1);
   }
 
   private buildSendableItem(): Item {

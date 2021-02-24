@@ -101,6 +101,21 @@
             <mat-card-subtitle>Adicionar fornecedores</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
+            <div class="images-list-box">
+              <mat-selection-list #imagesList style="padding: 0;" [multiple]="false">
+                <mat-list-option *ngFor="let image of images; let i = index" [value]="image">
+                  
+                  <div style="float: left">
+                    {{image.name}}        
+                    <mat-icon style="float: right" (click)="deleteFile(i)">delete</mat-icon>
+                  </div>
+                </mat-list-option>
+              </mat-selection-list>
+            </div>
+            <input #inputImage type="file" [hidden]="true" (change)="onFileSelect($event)">
+            <button mat-icon-button type="button" (click)="openInputImage()">
+              <mat-icon>add</mat-icon>
+            </button>
           </mat-card-content>
         </div>
         <div>

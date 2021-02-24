@@ -18,6 +18,10 @@ export class ItemService {
     return this.apiSvc.http.post<Item>(this.resource(), item);
   }
 
+  createOne(formData: FormData): Observable<FormData> {
+    return this.apiSvc.http.post<FormData>(this.resource(), formData);
+  }
+
   all(): Observable<Item[]> {
     return this.apiSvc.http.get<Item[]>(this.resource());
   }

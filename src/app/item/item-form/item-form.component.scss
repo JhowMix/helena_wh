@@ -30,3 +30,15 @@
 .item-card-form2 button {
   width: 100%;
 }
+
+.images-list-box {
+  width: 100%;
+  height: 30vh;
+  border-radius: 5px;
+  border: 1px solid #d4d4d4;
+  overflow-y: auto;
+}
+
+.photos-container {
+  display: flex;
+}
