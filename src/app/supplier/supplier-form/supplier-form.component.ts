@@ -55,9 +55,9 @@ export class SupplierFormComponent implements OnInit {
     private addressSvc: AddressService,
     private ufSvc: UfService,
     private citySvc: CityService,
-    private _route: Router,
+    private route: Router,
     private formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -70,16 +70,16 @@ export class SupplierFormComponent implements OnInit {
 
   fetchLocation(): void {
     this.isFetchingAddress = true;
-    
-    if(this.addressQuery) {
+
+    if (this.addressQuery) {
       this.addressSvc.fetchLocation(this.addressQuery).subscribe(res => {
         this.isFetchingAddress = false;
         const city = res.city;
-        const district = res.district; 
+        const district = res.district;
         const placeDesc = res.placeDesc;
-        
-        this.citySvc.fetchByUf(res.city.uf).subscribe(res => {
-          this.allCities = res;
+
+        this.citySvc.fetchByUf(res.city.uf).subscribe(res1 => {
+          this.allCities = res1;
           this.supplierForm.controls.city.setValue(city.id);
           this.supplierForm.controls.uf.setValue(city.uf.id);
           this.supplierForm.controls.district.setValue(district);
@@ -94,30 +94,30 @@ export class SupplierFormComponent implements OnInit {
     this.isFetchingCities = true;
 
     this.citySvc.fetchByUf(value).subscribe(res => {
-      this.allCities = res
+      this.allCities = res;
       this.isFetchingCities = false;
     }, error => {
-      console.error(error)
+      console.error(error);
       this.isFetchingCities = false;
     });
   }
 
-  send() {
+  send(): void {
     this.isSendingSupplier = true;
     const supplier = this.buildSendableSupplier();
 
-    if(supplier !== null) {
+    if (supplier !== null) {
       this.supplierSvc.create(supplier).subscribe(async _ => {
-        this._snackBar.open('Fornecedor criado com sucesso!', null, { duration: 2000 })
-        await this._route.navigateByUrl('');
+        this.snackBar.open('Fornecedor criado com sucesso!', null, { duration: 2000 });
+        await this.route.navigateByUrl('');
       }, error => {
         console.error(error);
-        this._snackBar.open('Falha ao criar fornecedor', null, { duration: 2000 })
+        this.snackBar.open('Falha ao criar fornecedor', null, { duration: 2000 });
         this.isSendingSupplier = false;
       });
     } else {
       this.isSendingSupplier = false;
-      this._snackBar.open('Preencha o formulário corretamente', null, { duration: 2000 })
+      this.snackBar.open('Preencha o formulário corretamente', null, { duration: 2000 });
     }
   }
 
@@ -135,21 +135,21 @@ export class SupplierFormComponent implements OnInit {
       fone1: ['', [Validators.required]],
       fone2: ['', []],
       email: ['', [
-        Validators.required, 
+        Validators.required,
         Validators.email
       ]],
       uf: ['', [Validators.required]],
       city: ['', [Validators.required]],
       district: ['', [Validators.required]],
       location: ['', [Validators.required]]
-    })
+    });
   }
 
   private buildSendableSupplier(): Supplier {
-    if(this.supplierForm.valid) {
+    if (this.supplierForm.valid) {
       const supplier = {} as Supplier;
       const address = {} as Address;
-      
+
       address.city = this.allCities.find(city => city.id === this.supplierForm.controls.city.value);
       address.district = this.supplierForm.controls.district.value;
       address.placeDesc = this.supplierForm.controls.location.value;
@@ -160,21 +160,21 @@ export class SupplierFormComponent implements OnInit {
       supplier.stateSub = this.supplierForm.controls.ie.value;
       supplier.email = this.supplierForm.controls.email.value;
       supplier.phones = [];
-      
+
       supplier.addresses = [address];
 
-      if(this.supplierForm.controls.fone1.value) {
+      if (this.supplierForm.controls.fone1.value) {
         supplier.phones.push({
           category: 'LANDLINE',
           number: this.supplierForm.controls.fone1.value
         } as Phone);
-      } else if(this.supplierForm.controls.fone2.value) {
+      } else if (this.supplierForm.controls.fone2.value) {
         supplier.phones.push({
           category: 'LANDLINE',
           number: this.supplierForm.controls.fone2.value
         } as Phone);
       }
-      
+
       return supplier;
     }
 
