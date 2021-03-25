@@ -7,7 +7,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SideMenuModule} from './side-menu/side-menu.module';
 import {ItemModule} from './item/item.module';
 import {HttpClientModule} from '@angular/common/http';
-import { SupplierModule } from './supplier/supplier.module';
+import {SupplierModule} from './supplier/supplier.module';
+import {UserModule} from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SupplierModule } from './supplier/supplier.module';
     BrowserAnimationsModule,
     SideMenuModule,
     ItemModule,
-    SupplierModule
+    SupplierModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

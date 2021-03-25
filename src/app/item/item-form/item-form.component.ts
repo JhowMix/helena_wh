@@ -97,7 +97,7 @@ export class ItemFormComponent implements OnInit {
     if(!this.suppliers.find(s => s.id === event.option.value.id)) {
       this.suppliers.push(event.option.value as Supplier);
     }
-    
+
     this.supplierInput.nativeElement.value = '';
     this.supplierCtrl.setValue(null);
   }
@@ -112,7 +112,7 @@ export class ItemFormComponent implements OnInit {
     for(const image of this.images) {
       formData.append('files', image);
     }
-    
+
     if(item) {
       this.itemSvc.createOne(formData).subscribe( async _ => {
         this._snackBar.open('Item criado com sucesso!', null, { duration: 2000 })
@@ -126,7 +126,7 @@ export class ItemFormComponent implements OnInit {
       this.isSendingItem = false;
     }
   }
-  
+
   onFileSelect(event): void {
     if(event.target.files.length > 0) {
       this.images.push(event.target.files[0]);
@@ -150,12 +150,12 @@ export class ItemFormComponent implements OnInit {
       measurement.height = this.itemForm.controls.height.value;
       measurement.length = this.itemForm.controls.length.value;
       measurement.unit = this.itemForm.controls.unit.value;
-  
+
       item.name = this.itemForm.controls.name.value;
       item.details = this.itemForm.controls.details.value;
       item.suppliers = this.suppliers;
       item.measurement = measurement;
-      
+
       return item;
     }
 

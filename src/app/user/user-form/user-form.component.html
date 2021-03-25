@@ -1,0 +1,141 @@
+<mat-grid-list class="user-grid" cols="1" rowHeight="2:1">
+  <mat-grid-tile>
+    <div class="user-container">
+      <mat-toolbar>
+        <span class="material-icons">
+          account_circle
+        </span>&nbsp;&nbsp;
+        <span>Novo Usuário</span>
+      </mat-toolbar>
+      <mat-horizontal-stepper [linear]="true" #stepper>
+        <mat-step [stepControl]="step1Form">
+          <form [formGroup]="step1Form">
+            <ng-template matStepLabel>Dados de autenticação</ng-template>
+            <div class="inputs-form-1">
+              <mat-form-field appearance="outline">
+                <mat-label>Nome de Usuário</mat-label>
+                <input matInput required formControlName="username" (ngModelChange)="checkUsername($event)">
+                <mat-spinner matSuffix *ngIf="isSearchingUsername" [diameter]="25"></mat-spinner>
+                <span matSuffix *ngIf="!hasFoundUsername && step1Form.controls.username.valid" class="material-icons">
+                  done
+                </span>
+              </mat-form-field>
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Senha</mat-label>
+                  <input matInput required type="password" formControlName="password">
+                </mat-form-field>
+              </div>
+
+              <div>
+                <mat-form-field #password2Field appearance="outline">
+                  <mat-label>Confirmar Senha</mat-label>
+                  <input matInput required type="password" formControlName="confirmPassword" (focusout)="checkPasswords()">
+                  <mat-error *ngIf="!areEqualPasswords">As senhas devem ser iguais</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div style="text-align: center">
+              <button mat-stroked-button matStepperNext [disabled]="!isFirstFormValid">Próximo</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="step2Form" label="Dados de Identificação">
+          <form [formGroup]="step2Form">
+            <div style="width: 79%;">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Nome Completo</mat-label>
+                <input matInput required placeholder="Digite o seu nome..." formControlName="name">
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>RG</mat-label>
+                <input matInput required placeholder="Digite seu RG..." formControlName="rg">
+              </mat-form-field>
+
+              <mat-form-field style="margin-left: 3%" appearance="outline">
+                <mat-label>CPF</mat-label>
+                <input matInput required placeholder="Selecione" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
+              </mat-form-field>
+            </div>
+
+            <div style="width: 79%;">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput required placeholder="email@email.com" formControlName="email">
+              </mat-form-field>
+            </div>
+
+            <div>
+              <button mat-stroked-button matStepperPrevious>Voltar</button>
+              <button mat-stroked-button matStepperNext>Próximo</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="step3Form" label="Localização">
+          <form [formGroup]="step3Form">
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>CEP</mat-label>
+                <input matInput required placeholder="00000-000" formControlName="cep" mask="00000-000" (keyup)="checkCEP()">
+                <mat-error *ngIf="isFetchingLocationFailed">Não foi possível buscar endereço</mat-error>
+                <mat-spinner matSuffix *ngIf="isFetchingLocation" [diameter]="25"></mat-spinner>
+                <button matSuffix mat-icon-button matTooltip="Desativar automático" type="button" *ngIf="!isFetchingLocation" class="material-icons">
+                  <mat-icon>location_disabled</mat-icon>
+                </button>        
+              </mat-form-field>
+
+              <mat-form-field style="margin-left: 3%" appearance="outline">
+                <mat-label>UF</mat-label>
+                <mat-select required (selectionChange)="fetchCities()" formControlName="uf">
+                  <mat-option *ngFor="let uf of allUfs" [value]="uf.id">
+                    {{uf.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Municipio</mat-label>
+                <mat-select required formControlName="city">
+                  <mat-option *ngFor="let city of allCities" [value]="city.id">
+                    {{city.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field style="margin-left: 3%" appearance="outline">
+                <mat-label>Bairro</mat-label>
+                <input matInput required formControlName="district">
+              </mat-form-field>
+            </div>
+
+            <div style="width: 79%;">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Logradouro</mat-label>
+                <input matInput required formControlName="location">
+              </mat-form-field>
+            </div>
+            <div style="width: 79%;">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Complemento</mat-label>
+                <input matInput>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <button mat-stroked-button matStepperPrevious>Voltar</button>
+              <button mat-stroked-button (click)="sendAll()">Enviar</button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -6,7 +6,7 @@ nav {
   top: 0;
   left: 0;
 
-  background-color: #fff;
+  background-color: #424242;
 }
 
 ul {
@@ -25,9 +25,9 @@ ul li span {
 }
 
 li:hover {
-  color: #303f9f;
-  background: #eeeded;
-  border-right: 4px solid #303f9f;
+  color: #434343;
+  background: #eeeeed;
+  border-right: 4px solid #434343;
 
   cursor: pointer;
   transition: background 200ms;
@@ -51,7 +51,7 @@ li  {
 }
 
 .selected-item {
-  color: #303f9f;
+  color: #434343;
   background: #fff;
-  border-right: 4px solid #303f9f;
+  border-right: 4px solid #000;
 }
