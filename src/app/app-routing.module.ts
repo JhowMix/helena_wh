@@ -5,6 +5,7 @@ import { ItemListComponent } from './item/item-list/item-list.component';
 import { SupplierFormComponent } from './supplier/supplier-form/supplier-form.component';
 import { SupplierListComponent } from './supplier/supplier-list/supplier-list.component';
 import {UserFormComponent} from './user/user-form/user-form.component';
+import { UserListComponent } from './user/user-list/user-list.component';
 
 const routes: Routes = [
   {path: 'fornecedores', children: [
@@ -16,6 +17,7 @@ const routes: Routes = [
     {path: 'novo', component: ItemFormComponent}
   ]},
   {path: 'usuarios', children: [
+    {path: '', component: UserListComponent},
       {path: 'novo', component: UserFormComponent}
     ]}
 ];

@@ -6,11 +6,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxMaskModule} from 'ngx-mask';
 import {UtilModule} from '../module/util.module';
 import {EqualValidator} from '../validator/equal-validator.directive';
+import { UserListComponent } from './user-list/user-list.component';
 
 
 
 @NgModule({
-  declarations: [UserFormComponent, EqualValidator],
+  declarations: [UserFormComponent, EqualValidator, UserListComponent],
   imports: [
     CommonModule,
     FormsModule,

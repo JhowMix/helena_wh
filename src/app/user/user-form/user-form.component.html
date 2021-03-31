@@ -1,5 +1,5 @@
 <mat-grid-list class="user-grid" cols="1" rowHeight="2:1">
-  <mat-grid-tile>
+  <mat-grid-tile @cardContentTrigger>
     <div class="user-container">
       <mat-toolbar>
         <span class="material-icons">
@@ -19,6 +19,7 @@
                 <span matSuffix *ngIf="!hasFoundUsername && step1Form.controls.username.valid" class="material-icons">
                   done
                 </span>
+                <mat-error *ngIf="hasFoundUsername === true">Usuário já existente</mat-error>
               </mat-form-field>
               <div>
                 <mat-form-field appearance="outline">
@@ -31,13 +32,13 @@
                 <mat-form-field #password2Field appearance="outline">
                   <mat-label>Confirmar Senha</mat-label>
                   <input matInput required type="password" formControlName="confirmPassword" (focusout)="checkPasswords()">
-                  <mat-error *ngIf="!areEqualPasswords">As senhas devem ser iguais</mat-error>
+                  <mat-error *ngIf="areEqualPasswords === false">As senhas devem ser iguais {{areEqualPasswords}}</mat-error>
                 </mat-form-field>
               </div>
             </div>
 
             <div style="text-align: center">
-              <button mat-stroked-button matStepperNext [disabled]="!isFirstFormValid">Próximo</button>
+              <button mat-stroked-button matStepperNext [disabled]="!isFirstFormValid && hasFoundUsername === true">Próximo</button>
             </div>
           </form>
         </mat-step>

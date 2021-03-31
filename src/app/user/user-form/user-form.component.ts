@@ -1,4 +1,4 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
@@ -18,7 +18,25 @@ import { UserService } from '../../service/user.service';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+  styleUrls: ['./user-form.component.scss'],
+  animations: [
+    trigger('cardTrigger', [
+      transition(':enter', [
+        style({ height: 0 }),
+        animate('150ms ease-out', style({ height: '90%' }))
+      ]),
+      transition(':leave', [
+        style({ height: '90%' }),
+        animate('200ms 100ms ease-out', style({ height: 0 }))
+      ]),
+    ]),
+    trigger('cardContentTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('170ms ease-out', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class UserFormComponent implements OnInit {
   @ViewChild('password2Field', {static: true}) password2Field: ElementRef<MatFormField>;
@@ -30,7 +48,7 @@ export class UserFormComponent implements OnInit {
   usernameQuery: Subject<string> = new Subject<string>();
   isSearchingUsername = false;
   isFetchingLocation = false;
-  hasFoundUsername = true;
+  hasFoundUsername;
   isFetchingLocationFailed;
   areEqualPasswords;
 
@@ -48,7 +66,7 @@ export class UserFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.ufSvc.getAll().subscribe(res => this.allUfs = res);
+    this.ufSvc.getAll().subscribe((res: any)  => this.allUfs = res);
     this.buildAllForms();
     this.buildUsernameSubject();
 
@@ -66,6 +84,10 @@ export class UserFormComponent implements OnInit {
     const confirmPassword: string = this.step1Form.controls.confirmPassword.value;
 
     this.areEqualPasswords = password === confirmPassword;
+    
+    if(!this.areEqualPasswords) {
+      this.step1Form.controls.confirmPassword.setErrors({incorrect: true});
+    }
   }
 
   checkCEP(): void {
@@ -145,16 +167,14 @@ export class UserFormComponent implements OnInit {
       this.isSearchingUsername = true;
 
       this.userSvc.hasUserByUsername(query).subscribe(res => {
+        this.hasFoundUsername = res
 
-        switch (res.status) {
-          case 302:
-            this.hasFoundUsername = true;
-            break;
-          case 204:
-            this.hasFoundUsername = false;
-            break;
-        }
+        if(this.hasFoundUsername)
+          this.step1Form.controls.username.setErrors({incorrect: true});
 
+        this.isSearchingUsername = false;
+      }, error => {
+        console.error(error);
         this.isSearchingUsername = false;
       });
     });

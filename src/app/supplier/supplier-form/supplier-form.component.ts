@@ -62,7 +62,7 @@ export class SupplierFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildSupplierForm();
-    this.ufSvc.getAll().subscribe(res => this.allUfs = res);
+    this.ufSvc.getAll().subscribe((res: any) => this.allUfs = res);
     setTimeout(() => {
       this.isContentVisible = true;
     }, 200);
